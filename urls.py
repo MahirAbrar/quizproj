@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # all API endpoints will start with /api/
     path('api/', include('api.urls')),
+    path('profiles/', include('profiles.urls')),
 ]

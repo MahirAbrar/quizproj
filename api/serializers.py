@@ -29,8 +29,11 @@ class QuestionSerializer(serializers.ModelSerializer):
             question = Question.objects.create(**validated_data)
             
             # Get the correct word from choices_data
-            correct_word = choices_data[0]['answer']
-            
+            correct_words = [choice['answer'] for choice in choices_data if choice['is_correct']]
+            if not correct_words:
+                raise serializers.ValidationError(
+                    'At least one correct word must be provided for select word questions.'
+                )
             # Get all words from text
             words = Question.get_words(validated_data['text'])
             
@@ -39,7 +42,7 @@ class QuestionSerializer(serializers.ModelSerializer):
                 Choice.objects.create(
                     question=question,
                     answer=word,
-                    is_correct=(word == correct_word)  
+                    is_correct=(word in correct_words)  
                 )
         else:
         #     # # For single and multiple choice questions
@@ -53,6 +56,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     # # overwrite the default validate method to add custom validation
     def validate(self, data):
+        choices = data['choice_set']  
         if data['question_type'] == Question.SELECT_WORD:
             question_text = data['text'].lower()
             for choice in choices:
@@ -63,10 +67,8 @@ class QuestionSerializer(serializers.ModelSerializer):
             
         # Validate that single choice questions only have one correct answer
         elif data['question_type'] == Question.SINGLE_CHOICE:
-            choices = data['choice_set']    
-            print("*" * 50)
-            print(data)
-            count = 0
+            count = 0  
+
             for choice in choices:
                 if choice['is_correct']:
                     count += 1
@@ -81,12 +83,18 @@ class QuestionSerializer(serializers.ModelSerializer):
     
            
         
-    #     # # Validate that questions have at least 2 choices 
         else:
             if len(choices) < 2:
                 raise serializers.ValidationError(
                     'Questions must have at least 2 choices.'
                 )
+            for choice in choices:
+                if choice['is_correct']:
+                    return data
+            raise serializers.ValidationError(
+                'Multiple choice questions must have at least one correct answer.'
+            )
+            
         return data
 
 class QuizSerializer(serializers.ModelSerializer):

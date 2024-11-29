@@ -1,3 +1,4 @@
+Single test Cases
 {
     "quiz": 1,
     "text": "What is 2+2?",
@@ -8,20 +9,98 @@
     ]
 }
 
+{
+    "quiz": 4,
+    "text": "What is 2+2?",
+    "question_type": "single",
+    "choices": [
+        {"answer": "3", "is_correct": false},
+        {"answer": "2", "is_correct": false}
+    ]
+}
 
+{
+    "quiz": 4,
+    "text": "What is 2+2?",
+    "question_type": "single",
+    "choices": [
+        {"answer": "4", "is_correct": true},
+        {"answer": "4", "is_correct": true}
+    ]
+}
+
+
+Multi test cases
+{
+    "quiz": 4,
+    "text": "What is 2+2?",
+    "question_type": "multiple",
+    "choices": [
+        {"answer": "3", "is_correct": false},
+        {"answer": "4", "is_correct": true},
+        {"answer": "4.0", "is_correct": true}
+    ]
+}
+
+{
+    "quiz": 4,
+    "text": "What is 2+2?",
+    "question_type": "multiple",
+    "choices": [
+        {"answer": "3", "is_correct": false},
+        {"answer": "2", "is_correct": false}
+    ]
+}
+
+{
+    "quiz": 4,
+    "text": "What is 2+2?",
+    "question_type": "multiple",
+    "choices": [
+        {"answer": "4", "is_correct": true},
+        {"answer": "4", "is_correct": true}
+    ]
+}
 
 
 
 word test cases
 
 {
-    "text": "The capital of France is Paris",
+    "text": "Programming languages: Python, R, chair, facebook ",
     "question_type": "word",
-    "quiz": 1,
+    "quiz": 4,
     "choices": [
         {
-            "answer": "Paris",
-            "is_correct": false
+            "answer": "Python",
+            "is_correct": true
+        },
+        {
+            "answer": "R",
+            "is_correct": true
         }
+    ]
+}
+
+{
+    "text": "Programming languages: Java, jarva, Jhava, Bali ",
+    "question_type": "word",
+    "quiz": 4,
+    "choices": [
+        {
+            "answer": "Java",
+            "is_correct": true
+        }
+       
+    ]
+}
+
+{
+    "text": "Programming languages: Java, jarva, Jhava, Bali ",
+    "question_type": "word",
+    "quiz": 4,
+    "choices": [
+      
+       
     ]
 }
