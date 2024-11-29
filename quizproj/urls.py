@@ -1,7 +1,11 @@
 from django.contrib import admin
-from django.urls import path, include  
+from django.urls import path, include
 
+# Main URL configuration for the entire project
 urlpatterns = [
+    # admin interface
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')), #root/api/urls.py  
+    # all API endpoints will start with /api/
+    path('api/', include('api.urls')),
+    path('profiles/', include('profiles.urls')),
 ]
