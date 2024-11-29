@@ -11,6 +11,7 @@ router = DefaultRouter()
 # PUT /quizzes/{id}/ - update a specific quiz
 # DELETE /quizzes/{id}/ - delete a specific quiz
 router.register(r'quizzes', views.QuizViewSet)
+router.register(r'questions', views.QuestionViewSet)
 
 # Create the URL patterns
 urlpatterns = [

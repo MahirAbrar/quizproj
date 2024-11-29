@@ -1,0 +1,25 @@
+{
+    "quiz": 1,
+    "text": "What is 2+2?",
+    "question_type": "single",
+    "choices": [
+        {"answer": "3", "is_correct": false},
+        {"answer": "4", "is_correct": true}
+    ]
+}
+
+
+
+
+
+word test cases
+{
+    "quiz": 1,
+    "text": "The capital of France is Paris",
+    "question_type": "word",
+    "word_answers": [
+        {
+            "correct_words": "Paris"
+        }
+    ]
+}
