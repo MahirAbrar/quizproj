@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
+from .views import QuizSubmissionView
 
 # Create a router instance
 router = DefaultRouter()
@@ -17,5 +18,5 @@ router.register(r'questions', views.QuestionViewSet)
 urlpatterns = [
     # Include all the URLs created by the router
     path('', include(router.urls)),
-    path('quizzes/<int:pk>/', views.QuizDetailView.as_view(), name='quiz-detail')
+    path('quizzes/<int:quiz_id>/submit/', QuizSubmissionView.as_view()),
 ]

@@ -75,3 +75,41 @@ class Choice(models.Model):
     def __str__(self):
         return self.answer
     
+
+
+class QuizAttempt(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    answers = models.JSONField()  # Will store: {"question_id": [choice_ids]}
+    score = models.FloatField(null=True)  # Store score as percentage
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def calculate_score(self):
+        """
+        Calculate the score based on stored answers.
+        Format of answers: {
+            "question_id": [selected_choice_ids]
+        }
+        """
+        total_questions = len(self.answers)
+        if total_questions == 0:
+            return 0
+            
+        correct_answers = 0
+        
+        for question_id, selected_choices in self.answers.items():
+            # Get the question and its correct choices
+            question = Question.objects.get(id=question_id)
+            correct_choices = set(
+                question.choice_set.filter(is_correct=True).values_list('id', flat=True)
+            )
+            
+            # Compare sets of selected and correct choices
+            if set(selected_choices) == correct_choices:
+                correct_answers += 1
+        
+        self.score = (correct_answers / total_questions) * 100
+        self.save()
+        return self.score
+
+    def __str__(self):
+        return f"{self.quiz.title} - {self.score}%"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Quiz, Choice, Question
+from .models import Quiz, Choice, Question, QuizAttempt
 
 #A quiz can have 0 or more questions.
 #A question can have 2 or more choices.
@@ -106,3 +106,46 @@ class QuizSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'questions']
 
 
+
+
+
+#Quiz attemps
+class QuizSubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuizAttempt
+        fields = ['quiz', 'answers']
+
+    def validate_answers(self, answers):
+        """
+        Validate answer format and question types
+        answers format: {
+            "question_id": [choice_ids]
+        }
+        """
+        if not isinstance(answers, dict):
+            raise serializers.ValidationError("Answers must be a dictionary")
+
+        for question_id, selected_choices in answers.items():
+            try:
+                question = Question.objects.get(id=question_id)
+            except Question.DoesNotExist:
+                raise serializers.ValidationError(f"Question {question_id} does not exist")
+
+            # Validate selected choices exist for this question
+            valid_choice_ids = set(question.choice_set.values_list('id', flat=True))
+            invalid_choices = [c for c in selected_choices if c not in valid_choice_ids]
+            if invalid_choices:
+                raise serializers.ValidationError(f"Invalid choices for question {question_id}: {invalid_choices}")
+
+            # Validate based on question type
+            if question.question_type == 'single' and len(selected_choices) != 1:
+                raise serializers.ValidationError(f"Question {question_id} requires exactly one answer")
+            elif not selected_choices:
+                raise serializers.ValidationError(f"No answers provided for question {question_id}")
+
+        return answers
+
+    def create(self, validated_data):
+        attempt = QuizAttempt.objects.create(**validated_data)
+        attempt.calculate_score()  # Calculate and save score
+        return attempt
