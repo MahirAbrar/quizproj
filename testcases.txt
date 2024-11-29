@@ -13,13 +13,15 @@
 
 
 word test cases
+
 {
-    "quiz": 1,
     "text": "The capital of France is Paris",
     "question_type": "word",
-    "word_answers": [
+    "quiz": 1,
+    "choices": [
         {
-            "correct_words": "Paris"
+            "answer": "Paris",
+            "is_correct": false
         }
     ]
 }
