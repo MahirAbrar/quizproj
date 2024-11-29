@@ -3,6 +3,7 @@ from .models import Quiz, Question
 from .serializers import QuizSerializer, QuestionSerializer
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework import generics
 
 # A viewset that will handle CRUD operations for Quiz model
 class QuizViewSet(viewsets.ModelViewSet):
@@ -17,3 +18,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
    serializer_class = QuestionSerializer
 
 
+class QuizDetailView(generics.RetrieveAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer

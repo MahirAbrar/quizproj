@@ -98,7 +98,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         return data
 
 class QuizSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True, read_only=True) #Read_only allows for 0 questions
+    questions = QuestionSerializer(many=True, read_only=True, source='question_set') #Read_only allows for 0 questions
     class Meta:
         # Quiz model from models.py
         model = Quiz

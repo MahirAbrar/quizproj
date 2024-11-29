@@ -17,4 +17,5 @@ router.register(r'questions', views.QuestionViewSet)
 urlpatterns = [
     # Include all the URLs created by the router
     path('', include(router.urls)),
+    path('quizzes/<int:pk>/', views.QuizDetailView.as_view(), name='quiz-detail')
 ]
